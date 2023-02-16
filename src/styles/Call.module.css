@@ -1,0 +1,14 @@
+.button {
+  color: black;
+  /* background: teal; */
+  padding: 0.375rem 0.75rem;
+  border: 1px solid teal;
+  border-radius: 1rem;
+  font-size: 2rem;
+  line-height: 1.5;
+  margin: 5px;
+}
+
+.buttonClicked {
+  background: teal;
+}

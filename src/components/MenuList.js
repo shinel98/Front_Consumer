@@ -24,6 +24,7 @@ import { useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import OrderModal from "./OrderModal";
 
 const dummyData = [
   {
@@ -298,6 +299,9 @@ export default function MenuList() {
   const [selectMenuList, setSelectMenuList] = useState([]);
   const [menus, setMenus] = useState([]);
   const [count, setCount] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -315,6 +319,7 @@ export default function MenuList() {
         setCount((old) => {
           let newCount = [...old];
           newCount[index]++;
+          // console.log(newCount[index]);
           return newCount;
         });
       }
@@ -556,10 +561,13 @@ export default function MenuList() {
               <span>총:</span>
               <span>{totalPrice}원</span>
             </Typography>
-            <Button variant="contained" color="success" sx={{ width: 1 }}>
-              주문하기
-            </Button>
-            {/* <OrderModal price={totalPrice} reset={handleClickReset} /> */}
+
+            <OrderModal
+              totalPrice={totalPrice}
+              menuList={selectMenuList}
+              reset={handleClickReset}
+              count={count}
+            />
           </Box>
         </Card>
       </Box>
