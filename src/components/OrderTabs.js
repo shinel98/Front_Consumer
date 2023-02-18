@@ -1,14 +1,14 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import SwipeableViews from "react-swipeable-views";
-import { useTheme } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import MenuTab from "./MenuTab";
-import Call from "../pages/Call";
+import * as React from 'react';
+import PropTypes from 'prop-types';
+import SwipeableViews from 'react-swipeable-views';
+import { useTheme } from '@mui/material/styles';
+import AppBar from '@mui/material/AppBar';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import MenuTab from './MenuTab';
+import Call from '../pages/Call';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,11 +39,11 @@ TabPanel.propTypes = {
 function a11yProps(index) {
   return {
     id: `full-width-tab-${index}`,
-    "aria-controls": `full-width-tabpanel-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`,
   };
 }
 
-export default function OrderTabs() {
+export default function OrderTabs({ seat }) {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -56,7 +56,7 @@ export default function OrderTabs() {
   };
 
   return (
-    <Box sx={{ bgcolor: "background.paper", width: 1 }}>
+    <Box sx={{ bgcolor: 'background.paper', width: 1 }}>
       <AppBar position="sticky">
         <Tabs
           value={value}
@@ -65,7 +65,7 @@ export default function OrderTabs() {
           textColor="inherit"
           variant="fullWidth"
           aria-label="full width tabs example"
-          sx={{ backgroundColor: "green" }}
+          sx={{ backgroundColor: 'green' }}
         >
           <Tab label="메뉴" {...a11yProps(0)} />
           <Tab label="직원 호출" {...a11yProps(1)} />
@@ -73,7 +73,7 @@ export default function OrderTabs() {
         </Tabs>
       </AppBar>
       <SwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
       >
@@ -81,7 +81,7 @@ export default function OrderTabs() {
           <MenuTab />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <Call />
+          <Call seat={seat} />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
           Item Three
