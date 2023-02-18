@@ -1,10 +1,10 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import NotFound from "./components/NotFound";
-import Cart from "./pages/Cart";
-import Main from "./pages/Main";
-import OrderLayout from "./pages/OrderLayout";
+import NotFound from './components/NotFound';
+import Cart from './pages/Cart';
+import Main from './pages/Main';
+import OrderLayout from './pages/OrderLayout';
 
 function App() {
   return (

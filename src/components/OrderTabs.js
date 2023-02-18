@@ -44,7 +44,7 @@ function a11yProps(index) {
   };
 }
 
-export default function OrderTabs() {
+export default function OrderTabs({ seat }) {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -82,7 +82,7 @@ export default function OrderTabs() {
           <MenuTab />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <Call />
+          <Call seat={seat} />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
           <Cart />
