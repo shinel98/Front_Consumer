@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: row;
   margin: 10px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 20px;
   height: 150px;
   overflow: auto;
@@ -13,7 +14,8 @@
   overflow: hidden;
 }
 .menuDetail {
-  margin: 2px 0 0 20px;
+  margin: 15px 0 0 0;
+  text-align: center;
   display: flex;
   flex-direction: column;
 }
@@ -58,10 +60,17 @@
   position: fixed;
   display: inline-block;
   width: 70px;
-  height: 70px;
+  height: 50px;
   background-color: green;
   border-radius: 20px;
   z-index: 10;
   bottom: 200px;
   right: 20px;
+  padding: 10px;
+  text-align: center;
+  line-height: 50px;
+}
+
+.boxShadow {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }

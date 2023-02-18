@@ -20,9 +20,11 @@ export default function CartItem({ key, item, onChangeProps, addMenu }) {
     setIsBtnValid(item.amount >= 1);
   }, [item.amount]);
 
-  const handleAddMenu = (menu) => {
-    addMenu(menu);
-    console.log(menuList);
+  const handleAddMenu = (item) => {
+    // addMenu(item.id, "amount", item.amount);
+    addMenu(item, "amount", item.amount);
+
+    // console.log(menuList);
     onChangeProps(item.id, "amount", 1);
   };
 
@@ -37,7 +39,7 @@ export default function CartItem({ key, item, onChangeProps, addMenu }) {
       </div>
       <div className={styles.menuDetail}>
         <div className={styles.name}>{item.name}</div>
-        <div className="desc">로제맛이 잘나는 파스타 ~~ 설명</div>
+        <div className="desc">{item.desc}</div>
         <div className="price">{item.price}</div>
         <div className={styles.menuBtn}>
           {isBtnValid ? (

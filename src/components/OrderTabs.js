@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import MenuTab from "./MenuTab";
 import Call from "../pages/Call";
+import Cart from "../pages/Cart";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -84,7 +85,7 @@ export default function OrderTabs() {
           <Call />
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          Item Three
+          <Cart />
         </TabPanel>
       </SwipeableViews>
     </Box>

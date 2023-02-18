@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
-import MenuCard from "./MenuCard";
+
 import styles from "../styles/Menu.module.css";
 import Dropdown from "./Dropdown";
-import { Divider } from "@mui/material";
+
 import { useState } from "react";
 import "../styles/animation.css";
 import { useEffect } from "react";
@@ -10,7 +10,7 @@ import * as React from "react";
 
 import CartItem from "./CartItem";
 import { useRecoilState } from "recoil";
-import { menuListState } from "../store/atom";
+import { menuBuf, menuListState } from "../store/atom";
 
 const dummyData = [
   {
@@ -18,6 +18,7 @@ const dummyData = [
     img: "img/두루치기.jpg",
     category: "한식",
     name: "돼지 두루치기",
+    desc: "맛있는 두루치기",
     price: "12000",
     amount: 1,
     orderAmount: 1,
@@ -27,6 +28,7 @@ const dummyData = [
     img: "img/김치찌개.jpg",
     category: "한식",
     name: "목살 김치찌개",
+    desc: "맛있는 김치찌개",
     price: "10000",
     amount: 1,
     orderAmount: 10,
@@ -36,6 +38,7 @@ const dummyData = [
     img: "img/로제파스타.jpeg",
     category: "양식",
     name: "로제 스파게티",
+    desc: "맛있는 스파게티",
     price: "12000",
     amount: 1,
     orderAmount: 10,
@@ -133,11 +136,16 @@ const dummyData = [
 ];
 export default function MenuTab() {
   const [dropdownVisibility, setDropdownVisibility] = useState(false);
+  const [drop1, setDrop1] = useState(true);
   const [drop2, setDrop2] = useState(false);
   const [drop3, setDrop3] = useState(false);
   const [drop4, setDrop4] = useState(false);
   const [tmpMenu, setTmpMenu] = useState([]);
+  const [test, setTest] = useState([]);
   const [menuList, setMenuList] = useRecoilState(menuListState);
+  const [arr, setArr] = useState([]);
+  const [noDuplicateMenu, setNoDuplicateMenu] = useRecoilState(menuBuf);
+  // let arr = [];
   const onChangeProps = (id, key, value) => {
     setTmpMenu((prevState) => {
       return prevState.map((obj) => {
@@ -149,23 +157,44 @@ export default function MenuTab() {
       });
     });
   };
-  const addMenu = (menu) => {
+  const addMenu = (menu, key, value) => {
+    let flag = false;
+    setArr(noDuplicateMenu);
     setMenuList((prev) => {
-      let newArr = [...prev, menu];
-      return newArr;
+      if (prev.length === 0) {
+        let newArr = [...prev, menu];
+        setArr([menu.id]);
+        return newArr;
+      }
+
+      console.log("arr : " + arr);
+      let temp = prev.map((obj) => {
+        if (obj.id === menu.id) {
+          console.log("음식 값 더해짐");
+          return { ...obj, [key]: value + obj.amount };
+        } else {
+          if (arr.includes(menu.id)) {
+            return { ...obj };
+          }
+
+          flag = true;
+          return 2;
+        }
+      });
+      if (flag === true) {
+        console.log("새로운 음식 담아짐");
+        flag = false;
+        let temp = [...arr, menu.id];
+        setArr(temp);
+        let newArr = [...prev, menu];
+
+        return newArr;
+      }
+      return temp;
     });
-    console.log(menuList);
-    // setMenuList((prev) => {
-    //   return prev.map((obj) => {
-    //     if (obj.id === id) {
-    //       // return { ...obj, [amount]: value, [name]: str };
-    //       console.log(obj);
-    //     } else {
-    //       return { ...obj };
-    //     }
-    //   });
-    // });
-    // console.log(menuList);
+
+    setNoDuplicateMenu(arr);
+    console.log("menu: " + [...noDuplicateMenu]);
   };
 
   useEffect(() => {
@@ -174,43 +203,25 @@ export default function MenuTab() {
   return (
     <>
       <Box sx={{ height: "100vh" }}>
-        <div className={styles.category}>인기 메뉴</div>
-        <Divider></Divider>
-        <Box sx={{ width: 1, border: 1 }}>
-          {tmpMenu.map((item, index) => {
-            return (
-              <>
-                {item.orderAmount >= 10 ? (
-                  <CartItem
-                    key={item.id}
-                    item={item}
-                    onChangeProps={onChangeProps}
-                    addMenu={addMenu}
-                  />
-                ) : (
-                  <div></div>
-                )}
-              </>
-            );
-          })}
-        </Box>
         <Box
-          sx={{ width: 1, border: 1, height: "60px", textAlign: "center" }}
-          onClick={(event) => setDrop2(!drop2)}
+          sx={{ width: 1, height: "60px", textAlign: "center" }}
+          onClick={(event) => setDrop1(!drop1)}
+          className={styles.boxShadow}
         >
-          <div className={styles.category}>일식</div>
+          <div className={styles.category}>인기 메뉴</div>
         </Box>
-        <Dropdown visibility={drop2}>
+        <Dropdown visibility={drop1}>
           <ul className={styles.noListDeco}>
-            <Box sx={{ width: 1, border: 1 }}>
+            <Box sx={{ width: 1 }}>
               {tmpMenu.map((item, index) => {
                 return (
                   <>
-                    {item.category === "일식" ? (
+                    {item.orderAmount >= 10 ? (
                       <CartItem
                         key={item.id}
                         item={item}
                         onChangeProps={onChangeProps}
+                        addMenu={addMenu}
                       />
                     ) : (
                       <div></div>
@@ -222,14 +233,44 @@ export default function MenuTab() {
           </ul>
         </Dropdown>
         <Box
-          sx={{ width: 1, border: 1, height: "60px", textAlign: "center" }}
+          sx={{ width: 1, height: "60px", textAlign: "center" }}
+          onClick={(event) => setDrop2(!drop2)}
+          className={styles.boxShadow}
+        >
+          <div className={styles.category}>일식</div>
+        </Box>
+        <Dropdown visibility={drop2}>
+          <ul className={styles.noListDeco}>
+            <Box sx={{ width: 1 }}>
+              {tmpMenu.map((item, index) => {
+                return (
+                  <>
+                    {item.category === "일식" ? (
+                      <CartItem
+                        key={item.id}
+                        item={item}
+                        onChangeProps={onChangeProps}
+                        addMenu={addMenu}
+                      />
+                    ) : (
+                      <div></div>
+                    )}
+                  </>
+                );
+              })}
+            </Box>
+          </ul>
+        </Dropdown>
+        <Box
+          sx={{ width: 1, height: "60px", textAlign: "center" }}
           onClick={(event) => setDropdownVisibility(!dropdownVisibility)}
+          className={styles.boxShadow}
         >
           <div className={styles.category}>양식</div>
         </Box>
         <Dropdown visibility={dropdownVisibility}>
           <ul className={styles.noListDeco}>
-            <Box sx={{ width: 1, border: 1 }}>
+            <Box sx={{ width: 1 }} className={styles.boxShadow}>
               {tmpMenu.map((item, index) => {
                 return (
                   <>
@@ -250,14 +291,15 @@ export default function MenuTab() {
         </Dropdown>
 
         <Box
-          sx={{ width: 1, border: 1, height: "60px", textAlign: "center" }}
+          sx={{ width: 1, height: "60px", textAlign: "center" }}
           onClick={(event) => setDrop3(!drop3)}
+          className={styles.boxShadow}
         >
           <div className={styles.category}>한식</div>
         </Box>
         <Dropdown visibility={drop3}>
           <ul className={styles.noListDeco}>
-            <Box sx={{ width: 1, border: 1 }}>
+            <Box sx={{ width: 1 }}>
               {tmpMenu.map((item, index) => {
                 return (
                   <>
@@ -277,14 +319,15 @@ export default function MenuTab() {
           </ul>
         </Dropdown>
         <Box
-          sx={{ width: 1, border: 1, height: "60px", textAlign: "center" }}
+          sx={{ width: 1, height: "60px", textAlign: "center" }}
           onClick={(event) => setDrop4(!drop4)}
+          className={styles.boxShadow}
         >
           <div className={styles.category}>음료</div>
         </Box>
         <Dropdown visibility={drop4}>
           <ul className={styles.noListDeco}>
-            <Box sx={{ width: 1, border: 1 }}>
+            <Box sx={{ width: 1 }}>
               {tmpMenu.map((item, index) => {
                 return (
                   <>
@@ -303,7 +346,7 @@ export default function MenuTab() {
             </Box>
           </ul>
         </Dropdown>
-        <div className={styles.historyBtn}></div>
+        {/* <div className={styles.historyBtn}>주문 내역</div> */}
       </Box>
     </>
   );

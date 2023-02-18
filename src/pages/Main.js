@@ -5,11 +5,11 @@ import OrderTabs from "../components/OrderTabs";
 
 function Main() {
   return (
-    <Grid container sx={{ border: 1 }}>
-      <Grid item sx={{ border: 1, width: 1 }}>
+    <Grid container>
+      <Grid item sx={{ width: 1 }}>
         <Header />
       </Grid>
-      <Grid item sx={{ border: 1, width: 1, height: "100vh" }}>
+      <Grid item sx={{ width: 1, height: "100vh" }}>
         <OrderTabs />
       </Grid>
     </Grid>
