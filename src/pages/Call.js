@@ -19,6 +19,28 @@ const cate = [
 
 export default function Call({ seat }) {
   const [clicked, setClicked] = useState([false, false, false, false, false, false]);
+  let request = '';
+
+  const sendRequest = async () => {
+    await sendRequestString();
+    handleRequest();
+  };
+
+  const sendRequestString = async () => {
+    await setRequestString();
+    sendReq();
+  };
+  const setRequestString = async () => {
+    for (let i = 0; i < clicked.length; i++) {
+      if (clicked[i]) {
+        if (request === '') {
+          request = cate[i].name;
+        } else {
+          request = request + ', ' + cate[i].name;
+        }
+      }
+    }
+  };
   const click = (e) => {
     let index = e.target.value;
     console.log(index);
@@ -27,11 +49,12 @@ export default function Call({ seat }) {
     setClicked(() => [...clicked]);
   };
   const handleRequest = () => {
+    request = '';
     setClicked([false, false, false, false, false, false]);
   };
 
-  const [req, setReq] = useState('물, 숟가락');
-  const [seatNum, setSeatnum] = useState(1);
+  // const [req, setReq] = useState('물, 숟가락');
+  // const [seatNum, setSeatnum] = useState(1);
   const client = useRef();
 
   // // seatId를 param으로 받고 Subscribe
@@ -80,7 +103,8 @@ export default function Call({ seat }) {
       1, // 밀리초 간격으로 실행
     );
   }
-  const onClickSendCall = () => {
+  const sendCall = () => {
+    console.log(seat);
     client.current.send(
       '/pub/chat/message/store',
       {},
@@ -91,6 +115,21 @@ export default function Call({ seat }) {
     );
   };
 
+  const sendReq = () => {
+    if (request === '') {
+      alert('요청메뉴를 선택하세요!');
+    } else {
+      client.current.send(
+        '/pub/chat/message/store',
+        {},
+        JSON.stringify({
+          content: request,
+          type: 'false',
+          seatNum: seat.seatNum,
+        }),
+      );
+    }
+  };
   return (
     <>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: '30px' }}>
@@ -115,12 +154,12 @@ export default function Call({ seat }) {
             justifyContent: 'flex-end',
           }}
         >
-          <button onClick={handleRequest} className={'subButton'}>
+          <button onClick={sendRequest} className={'subButton'}>
             요청
           </button>
         </Box>
 
-        <button className={'callServer'} onClick={onClickSendCall}>
+        <button className={'callServer'} onClick={sendCall}>
           직원만 호출하기
         </button>
       </Box>

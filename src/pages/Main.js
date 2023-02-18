@@ -8,14 +8,14 @@ import axios from 'axios';
 
 function Main() {
   // const { seatId } = useParams();
-  const seatId = 2;
+  const [seatId, setSeatId] = useState(2);
   const [seat, setSeat] = useState();
   const [load, setLoad] = useState(false);
 
-  useEffect(async () => {
-    await getSeat();
+  useEffect(() => {
+    getSeat();
     setLoad(true);
-  }, [seatId]);
+  }, []);
 
   async function getSeat() {
     try {

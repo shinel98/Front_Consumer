@@ -13,7 +13,6 @@ function App() {
       <Routes>
         <Route path="/" element={<OrderLayout />}></Route>
         <Route path="*" element={<NotFound />}></Route>
-        {/* <Route path="/main/:seatId" element={<Main />}></Route> */}
         <Route path="/main" element={<Main />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
         {/*여기에 route 추가 하면 됩니다 */}
